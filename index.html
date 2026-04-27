@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pure Wellness — Private Home Optimisation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Manrope:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --cream: #f5f0e8;
+    --cream-deep: #ede5d6;
+    --sage-pale: #c4cbb9;
+    --sage: #8a9a7b;
+    --olive: #6b7a5c;
+    --olive-deep: #4a5840;
+    --forest: #2c3528;
+    --ink: #1f2419;
+    --taupe: #8b7355;
+    --taupe-pale: #d4c5b0;
+    --line: rgba(31, 36, 25, 0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 300;
+    color: var(--ink);
+    background: var(--cream);
+    line-height: 1.65;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .display { font-family: 'Cormorant Garamond', serif; font-weight: 300; letter-spacing: -0.01em; }
+  .display-italic { font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300; }
+
+  .eyebrow {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.32em;
+    font-weight: 400;
+    color: var(--olive);
+  }
+
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 2.5rem; }
+  .container-narrow { max-width: 880px; margin: 0 auto; padding: 0 2.5rem; }
+
+  /* ───────────────────────── PASSWORD GATE ───────────────────────── */
+  #gate {
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 30% 30%, rgba(138, 154, 123, 0.15), transparent 55%),
+      radial-gradient(ellipse at 70% 70%, rgba(212, 197, 176, 0.2), transparent 55%),
+      var(--cream);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  #gate.hidden { display: none; }
+
+  .gate-grain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.4;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.2 0 0 0 0 0.2 0 0 0 0 0.15 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .gate-inner {
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .gate-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.04em;
+    color: var(--forest);
+    margin-bottom: 0.5rem;
+  }
+  .gate-logo span { font-style: italic; color: var(--olive); }
+
+  .gate-eyebrow {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.32em;
+    color: var(--sage);
+    margin-bottom: 3rem;
+  }
+
+  .gate-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 2rem;
+    line-height: 1.1;
+    color: var(--forest);
+    margin-bottom: 0.75rem;
+  }
+  .gate-title em { font-style: italic; color: var(--olive); }
+
+  .gate-sub {
+    font-size: 0.95rem;
+    color: var(--olive-deep);
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+  }
+
+  .gate-input-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .gate-input {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid var(--line);
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.95rem;
+    color: var(--forest);
+    text-align: center;
+    letter-spacing: 0.05em;
+    outline: none;
+    transition: border-color 0.3s ease, background 0.3s ease;
+  }
+  .gate-input:focus {
+    border-color: var(--olive);
+    background: rgba(255, 255, 255, 0.9);
+  }
+
+  .gate-button {
+    padding: 1rem 1.25rem;
+    background: var(--forest);
+    color: var(--cream);
+    border: 1px solid var(--forest);
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+  }
+  .gate-button:hover {
+    background: transparent;
+    color: var(--forest);
+  }
+
+  .gate-error {
+    font-size: 0.8rem;
+    color: #a04a3a;
+    margin-top: 1rem;
+    min-height: 1.2rem;
+    font-style: italic;
+  }
+
+  .gate-footer {
+    margin-top: 3rem;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    color: var(--sage);
+  }
+
+  /* ───────────────────────── HEADER ───────────────────────── */
+  .header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    padding: 1.5rem 2.5rem;
+    background: rgba(245, 240, 232, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.04em;
+    color: var(--forest);
+  }
+  .logo span { font-style: italic; color: var(--olive); }
+
+  .header-meta {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    color: var(--olive);
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  .header-meta .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--sage); display: inline-block; }
+
+  /* ───────────────────────── HERO ───────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 2.5rem 5rem;
+    position: relative;
+    background:
+      radial-gradient(ellipse at 80% 20%, rgba(138, 154, 123, 0.18), transparent 55%),
+      radial-gradient(ellipse at 10% 80%, rgba(212, 197, 176, 0.25), transparent 50%),
+      var(--cream);
+  }
+
+  .hero-grain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.4;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.2 0 0 0 0 0.2 0 0 0 0 0.15 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .hero-inner { max-width: 1280px; margin: 0 auto; width: 100%; position: relative; z-index: 2; }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: var(--olive);
+    background: rgba(255, 255, 255, 0.4);
+    margin-bottom: 3rem;
+  }
+  .hero-tag .seal { width: 6px; height: 6px; border-radius: 50%; background: var(--sage); }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(3rem, 7vw, 6.5rem);
+    line-height: 0.96;
+    color: var(--forest);
+    letter-spacing: -0.02em;
+    max-width: 14ch;
+    margin-bottom: 2.5rem;
+  }
+  .hero h1 em { font-style: italic; color: var(--olive); font-weight: 300; }
+
+  .hero-lede {
+    font-size: 1.15rem;
+    font-weight: 300;
+    color: var(--olive-deep);
+    max-width: 50ch;
+    line-height: 1.6;
+    margin-bottom: 4rem;
+  }
+
+  .hero-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 720px;
+    border-top: 1px solid var(--line);
+    padding-top: 2rem;
+    gap: 2rem;
+  }
+  .hero-meta-grid > div .label {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    color: var(--sage);
+    margin-bottom: 0.5rem;
+  }
+  .hero-meta-grid > div .value {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.3rem;
+    color: var(--forest);
+  }
+
+  /* ───────────────────────── PHILOSOPHY ───────────────────────── */
+  .philosophy { padding: 9rem 0; background: var(--cream); border-top: 1px solid var(--line); }
+  .philosophy-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 6rem; align-items: start; }
+  .philosophy-side .eyebrow { margin-bottom: 1rem; display: block; }
+  .philosophy-side .figure {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--olive);
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--line);
+    line-height: 1.5;
+  }
+  .philosophy-side .figure-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    color: var(--forest);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+  .philosophy-main h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+    line-height: 1.05;
+    color: var(--forest);
+    margin-bottom: 2.5rem;
+  }
+  .philosophy-main h2 em { font-style: italic; color: var(--olive); }
+  .philosophy-main p {
+    font-size: 1.1rem;
+    line-height: 1.75;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+    max-width: 56ch;
+  }
+
+  /* ───────────────────────── TIERS ───────────────────────── */
+  .tiers-section {
+    padding: 9rem 0;
+    background: linear-gradient(180deg, var(--cream) 0%, var(--cream-deep) 100%);
+    border-top: 1px solid var(--line);
+  }
+  .section-header {
+    text-align: center;
+    margin-bottom: 5rem;
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 2.5rem;
+  }
+  .section-header .eyebrow { margin-bottom: 1.5rem; display: block; }
+  .section-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(2.2rem, 4.5vw, 3.6rem);
+    line-height: 1.05;
+    color: var(--forest);
+    margin-bottom: 1.5rem;
+  }
+  .section-header h2 em { font-style: italic; color: var(--olive); }
+  .section-header p {
+    font-size: 1.05rem;
+    color: var(--olive-deep);
+    line-height: 1.65;
+    max-width: 52ch;
+    margin: 0 auto;
+  }
+  .modular-note {
+    max-width: 640px;
+    margin: 0 auto 5rem;
+    padding: 0 2.5rem;
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--olive);
+    line-height: 1.5;
+  }
+  .modular-note::before, .modular-note::after {
+    content: "";
+    display: block;
+    width: 30px;
+    height: 1px;
+    background: var(--sage);
+    margin: 1.25rem auto;
+  }
+
+  .tier-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+
+  .tier-card {
+    background: var(--cream);
+    border: 1px solid var(--line);
+    padding: 3rem 2.5rem;
+    position: relative;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    min-height: 480px;
+  }
+  .tier-card:hover { transform: translateY(-6px); box-shadow: 0 30px 60px -20px rgba(74, 88, 64, 0.18); }
+  .tier-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--sage);
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.05em;
+  }
+  .tier-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 2.6rem;
+    color: var(--forest);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  .tier-tag {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: var(--olive);
+    margin-bottom: 2rem;
+  }
+  .tier-desc { font-size: 0.98rem; line-height: 1.65; color: var(--ink); margin-bottom: 2rem; flex-grow: 1; }
+  .tier-pillars {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+  .tier-pillars span {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--olive-deep);
+    padding: 0.35rem 0.75rem;
+    background: var(--cream-deep);
+    border-radius: 100px;
+  }
+  .tier-card.featured { background: var(--forest); color: var(--cream); border-color: var(--forest); }
+  .tier-card.featured .tier-name { color: var(--cream); }
+  .tier-card.featured .tier-tag { color: var(--sage-pale); }
+  .tier-card.featured .tier-desc { color: var(--cream-deep); }
+  .tier-card.featured .tier-num { color: var(--sage-pale); }
+  .tier-card.featured .tier-pillars { border-top-color: rgba(245, 240, 232, 0.15); }
+  .tier-card.featured .tier-pillars span { background: rgba(245, 240, 232, 0.08); color: var(--sage-pale); }
+
+  /* ───────────────────────── DEEP DIVE ───────────────────────── */
+  .deep-dive { padding: 8rem 0; border-top: 1px solid var(--line); }
+  .deep-dive.essential { background: var(--cream); }
+  .deep-dive.signature { background: var(--cream-deep); }
+  .deep-dive.ultra { background: var(--forest); color: var(--cream); }
+
+  .deep-dive-header {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 4rem;
+    margin-bottom: 5rem;
+    align-items: end;
+  }
+  .deep-dive .level-marker {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--olive);
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+  .deep-dive.ultra .level-marker { color: var(--sage-pale); }
+  .deep-dive h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 1;
+    color: var(--forest);
+    letter-spacing: -0.02em;
+  }
+  .deep-dive.ultra h2 { color: var(--cream); }
+  .deep-dive h2 em { font-style: italic; color: var(--olive); }
+  .deep-dive.ultra h2 em { color: var(--sage-pale); }
+  .deep-dive-intro {
+    font-size: 1.15rem;
+    line-height: 1.65;
+    color: var(--olive-deep);
+    max-width: 56ch;
+    padding-bottom: 0.5rem;
+  }
+  .deep-dive.ultra .deep-dive-intro { color: var(--cream-deep); }
+
+  .elements-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  .element-card {
+    padding: 2.5rem 2rem;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid var(--line);
+    transition: background 0.4s ease, border-color 0.4s ease;
+  }
+  .element-card:hover { background: rgba(255, 255, 255, 0.8); border-color: var(--sage); }
+  .deep-dive.ultra .element-card {
+    background: rgba(245, 240, 232, 0.04);
+    border-color: rgba(245, 240, 232, 0.12);
+  }
+  .deep-dive.ultra .element-card:hover {
+    background: rgba(245, 240, 232, 0.08);
+    border-color: var(--sage);
+  }
+  .element-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    color: var(--olive);
+  }
+  .deep-dive.ultra .element-icon { border-color: rgba(245, 240, 232, 0.2); color: var(--sage-pale); }
+  .element-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 1.7rem;
+    color: var(--forest);
+    margin-bottom: 0.4rem;
+    line-height: 1.1;
+  }
+  .deep-dive.ultra .element-card h3 { color: var(--cream); }
+  .element-subtitle {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    color: var(--sage);
+    margin-bottom: 1.25rem;
+  }
+  .element-card p { font-size: 0.95rem; line-height: 1.65; color: var(--ink); margin-bottom: 1.5rem; }
+  .deep-dive.ultra .element-card p { color: var(--cream-deep); }
+  .element-features { list-style: none; padding-top: 1.25rem; border-top: 1px solid var(--line); }
+  .deep-dive.ultra .element-features { border-top-color: rgba(245, 240, 232, 0.12); }
+  .element-features li {
+    font-size: 0.85rem;
+    color: var(--olive-deep);
+    padding: 0.4rem 0 0.4rem 1.25rem;
+    position: relative;
+  }
+  .deep-dive.ultra .element-features li { color: var(--sage-pale); }
+  .element-features li::before { content: "—"; position: absolute; left: 0; color: var(--sage); }
+
+  /* ───────────────────────── PROCESS ───────────────────────── */
+  .process { padding: 9rem 0; background: var(--cream); border-top: 1px solid var(--line); }
+  .process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.5rem; margin-top: 5rem; }
+  .process-step { position: relative; padding-top: 3rem; }
+  .process-step::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 30px; height: 1px;
+    background: var(--olive);
+  }
+  .step-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--olive);
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .step-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: var(--forest);
+    margin-bottom: 0.75rem;
+    line-height: 1.2;
+  }
+  .step-desc { font-size: 0.92rem; line-height: 1.65; color: var(--olive-deep); }
+
+  /* ───────────────────────── TESTIMONIAL ───────────────────────── */
+  .testimonial {
+    padding: 10rem 0;
+    background: radial-gradient(ellipse at 50% 50%, rgba(138, 154, 123, 0.12), transparent 60%), var(--cream-deep);
+    border-top: 1px solid var(--line);
+    text-align: center;
+  }
+  .testimonial-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+    line-height: 1.35;
+    color: var(--forest);
+    max-width: 28ch;
+    margin: 2rem auto 3rem;
+  }
+  .testimonial-quote::before, .testimonial-quote::after {
+    content: "";
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--olive);
+    margin: 1.5rem auto;
+  }
+  .testimonial-attr {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: var(--olive);
+  }
+  .testimonial-attr .name { color: var(--forest); display: block; margin-bottom: 0.5rem; }
+
+  /* ───────────────────────── CTA ───────────────────────── */
+  .cta {
+    padding: 9rem 0;
+    background: var(--forest);
+    color: var(--cream);
+    text-align: center;
+    border-top: 1px solid var(--line);
+  }
+  .cta .eyebrow { color: var(--sage-pale); margin-bottom: 1.5rem; display: block; }
+  .cta h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 1.05;
+    color: var(--cream);
+    max-width: 18ch;
+    margin: 0 auto 2.5rem;
+  }
+  .cta h2 em { font-style: italic; color: var(--sage-pale); }
+  .cta p {
+    font-size: 1.1rem;
+    color: var(--cream-deep);
+    max-width: 50ch;
+    margin: 0 auto 4rem;
+    line-height: 1.65;
+  }
+  .cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 2.5rem;
+    background: var(--cream);
+    color: var(--forest);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    text-decoration: none;
+    border: 1px solid var(--cream);
+    border-radius: 100px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+  }
+  .cta-button:hover { background: transparent; color: var(--cream); }
+  .cta-button .arrow { transition: transform 0.3s ease; }
+  .cta-button:hover .arrow { transform: translateX(4px); }
+  .cta-meta {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    color: var(--sage-pale);
+    flex-wrap: wrap;
+  }
+  .cta-meta span { display: flex; align-items: center; gap: 0.6rem; }
+  .cta-meta .dot { width: 4px; height: 4px; background: var(--sage); border-radius: 50%; }
+
+  /* ───────────────────────── FOOTER ───────────────────────── */
+  .footer {
+    padding: 3rem 2.5rem;
+    background: var(--ink);
+    color: var(--cream-deep);
+    font-size: 0.78rem;
+    text-align: center;
+    letter-spacing: 0.04em;
+  }
+  .footer .display-italic { color: var(--sage-pale); font-size: 1.1rem; }
+
+  /* ───────────────────────── RESPONSIVE ───────────────────────── */
+  @media (max-width: 900px) {
+    .container, .container-narrow { padding: 0 1.5rem; }
+    .header { padding: 1rem 1.5rem; }
+    .header-meta { display: none; }
+    .hero { padding: 7rem 1.5rem 4rem; }
+    .hero h1 { font-size: clamp(2.4rem, 9vw, 4rem); max-width: 100%; }
+    .hero-meta-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+    .philosophy-grid, .deep-dive-header { grid-template-columns: 1fr; gap: 2rem; }
+    .tier-cards, .elements-grid, .process-grid { grid-template-columns: 1fr; gap: 1rem; }
+    .philosophy, .tiers-section, .deep-dive, .process, .testimonial, .cta { padding: 5rem 0; }
+    .section-header { margin-bottom: 3rem; }
+    .cta-meta { flex-direction: column; gap: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ───────────────────────── PASSWORD GATE ───────────────────────── -->
+<div id="gate">
+  <div class="gate-grain"></div>
+  <div class="gate-inner">
+    <div class="gate-logo">Pure <span>Wellness</span></div>
+    <div class="gate-eyebrow">— Private Client Portal —</div>
+    <h1 class="gate-title">By <em>invitation only.</em></h1>
+    <p class="gate-sub">
+      This portal is reserved for Vallat property owners. Please enter your access code to continue.
+    </p>
+    <form class="gate-input-wrap" onsubmit="return checkPassword(event)">
+      <input type="password" class="gate-input" id="passwordInput" placeholder="Access code" autocomplete="off" />
+      <button type="submit" class="gate-button">Enter</button>
+      <div class="gate-error" id="gateError"></div>
+    </form>
+    <div class="gate-footer">Vallat × Pure Wellness</div>
+  </div>
+</div>
+
+<script>
+  // ─── PASSWORD GATE LOGIC ─────────────────────────────────────────
+  // Change the password here. Use any word or phrase.
+  const ACCESS_PASSWORD = "vallat2026";
+
+  // Check if user already authenticated this session
+  if (sessionStorage.getItem('pure_access_granted') === 'true') {
+    document.getElementById('gate').classList.add('hidden');
+  }
+
+  function checkPassword(e) {
+    e.preventDefault();
+    const input = document.getElementById('passwordInput').value.trim().toLowerCase();
+    const errorEl = document.getElementById('gateError');
+    if (input === ACCESS_PASSWORD.toLowerCase()) {
+      sessionStorage.setItem('pure_access_granted', 'true');
+      document.getElementById('gate').classList.add('hidden');
+    } else {
+      errorEl.textContent = "The access code is not recognised.";
+      document.getElementById('passwordInput').value = '';
+    }
+    return false;
+  }
+</script>
+
+<header class="header">
+  <div class="logo">Pure <span>Wellness</span></div>
+  <div class="header-meta">
+    <span><span class="dot"></span> Private Client Portal</span>
+    <span>VALLAT × PURE</span>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grain"></div>
+  <div class="hero-inner">
+    <div class="hero-tag">
+      <span class="seal"></span>
+      Exclusive to Vallat Property Owners
+    </div>
+    <h1>The art of living, <em>refined to a science.</em></h1>
+    <p class="hero-lede">
+      An exclusive private home optimisation service designed for the homes Vallat curates and the lives lived within them. Air, water, light, movement, recovery — engineered to the standard your home deserves.
+    </p>
+    <div class="hero-meta-grid">
+      <div>
+        <div class="label">Discipline</div>
+        <div class="value">Three levels of integration</div>
+      </div>
+      <div>
+        <div class="label">Approach</div>
+        <div class="value">Bespoke to your residence</div>
+      </div>
+      <div>
+        <div class="label">Access</div>
+        <div class="value">By Vallat invitation</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<section class="philosophy">
+  <div class="container">
+    <div class="philosophy-grid">
+      <div class="philosophy-side">
+        <span class="eyebrow">— A Note from Pure Wellness</span>
+        <div class="figure">
+          <span class="figure-num">01.</span>
+          A home that supports the body should not be the exception. It should be the standard.
+        </div>
+      </div>
+      <div class="philosophy-main">
+        <h2>The home is the <em>first protocol.</em> Everything begins, and ends, here.</h2>
+        <p>
+          Most of us spend nine in every ten hours indoors. The air we breathe, the water we drink, the light that governs our biology — these are not amenities. They are the foundations of a life lived well.
+        </p>
+        <p>
+          Pure Wellness exists to ensure that the homes Vallat creates meet a standard not yet codified by luxury — a standard set not by what is visible, but by what is felt, slept through, and lived inside for decades.
+        </p>
+        <p>
+          Our work begins where the architecture ends.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIERS -->
+<section class="tiers-section">
+  <div class="section-header">
+    <span class="eyebrow">— Three Levels</span>
+    <h2>Foundation. Habit. <em>Optimisation.</em></h2>
+    <p>Three integrated levels of home wellness, each building upon the last. Begin with the essential. Layer in the active. Refine to the optimised.</p>
+  </div>
+
+  <p class="modular-note">
+    Three levels, designed to build upon one another — and assessed against what your home already provides. Where foundations exist, we honour them. Where they are absent, we begin there.
+  </p>
+
+  <div class="container">
+    <div class="tier-cards">
+      <article class="tier-card">
+        <div class="tier-num">— I.</div>
+        <h3 class="tier-name">Essential</h3>
+        <div class="tier-tag">The Fundamentals</div>
+        <p class="tier-desc">
+          The non-negotiable foundations of a healthy home. Clean air, pure water, circadian-aligned light. Every Vallat residence, brought to a standard your biology will recognise the moment you walk through the door.
+        </p>
+        <div class="tier-pillars">
+          <span>Air</span><span>Water</span><span>Light</span>
+        </div>
+      </article>
+
+      <article class="tier-card featured">
+        <div class="tier-num">— II.</div>
+        <h3 class="tier-name">Signature</h3>
+        <div class="tier-tag">Active Wellness</div>
+        <p class="tier-desc">
+          For the practices already woven into your life. Movement, contrast, recovery, stillness — designed into your home as fully realised spaces, not afterthoughts. Habits, properly housed.
+        </p>
+        <div class="tier-pillars">
+          <span>Movement</span><span>Sauna & Cold</span><span>Spa Design</span><span>Recovery</span>
+        </div>
+      </article>
+
+      <article class="tier-card">
+        <div class="tier-num">— III.</div>
+        <h3 class="tier-name">Ultra</h3>
+        <div class="tier-tag">Longevity & Optimisation</div>
+        <p class="tier-desc">
+          The home as longevity laboratory. Diagnostics, biohacking, advanced therapies, personalised protocols — guided by science, refined by experience, delivered with concierge precision.
+        </p>
+        <div class="tier-pillars">
+          <span>Biohacking</span><span>Diagnostics</span><span>Protocols</span><span>Concierge</span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ESSENTIAL -->
+<section class="deep-dive essential">
+  <div class="container">
+    <div class="deep-dive-header">
+      <div>
+        <span class="level-marker">Level I.</span>
+        <h2>Essential. <em>The fundamentals.</em></h2>
+      </div>
+      <p class="deep-dive-intro">
+        Three invisible elements that govern more of your wellbeing than any treatment, supplement, or therapy combined. The first conversation we have with every home.
+      </p>
+    </div>
+    <div class="elements-grid">
+      <article class="element-card">
+        <div class="element-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 12c4 0 4-3 8-3s4 3 8 3M3 7c3 0 3-2 6-2s3 2 6 2 3-2 6-2M3 17c3 0 3 2 6 2s3-2 6-2 3 2 6 2"/></svg>
+        </div>
+        <h3>Air</h3>
+        <div class="element-subtitle">Filtration & Quality</div>
+        <p>Indoor air is, on average, several times more polluted than the air outside. Hospital-grade HEPA and carbon filtration, VOC monitoring, humidity control and biophilic ventilation, integrated invisibly into the architecture of your home.</p>
+        <ul class="element-features">
+          <li>Whole-home medical-grade HEPA</li>
+          <li>Activated carbon for VOCs and chemicals</li>
+          <li>Real-time air quality monitoring</li>
+          <li>Humidity & circulation calibration</li>
+        </ul>
+      </article>
+      <article class="element-card">
+        <div class="element-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M12 3c-3 5-6 8-6 12a6 6 0 1012 0c0-4-3-7-6-12z"/></svg>
+        </div>
+        <h3>Water</h3>
+        <div class="element-subtitle">Filtration & Mineralisation</div>
+        <p>Whole-home water purification that removes chlorine, fluoride, heavy metals and microplastics — at every tap, every shower, every glass. Remineralised, structured, restored to a state your body recognises.</p>
+        <ul class="element-features">
+          <li>Multi-stage whole-home filtration</li>
+          <li>Reverse osmosis at point-of-use</li>
+          <li>Remineralisation & structuring</li>
+          <li>Shower-grade chlorine removal</li>
+        </ul>
+      </article>
+      <article class="element-card">
+        <div class="element-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/></svg>
+        </div>
+        <h3>Light</h3>
+        <div class="element-subtitle">Circadian Architecture</div>
+        <p>Lighting is biology, not decoration. Tunable circadian lighting that mirrors the sun's progression — bright and blue-rich in the morning, warm and amber by night. Your hormones, sleep, and energy follow the light you live in.</p>
+        <ul class="element-features">
+          <li>Tunable circadian lighting systems</li>
+          <li>Blue-light elimination after sunset</li>
+          <li>Daylight harvesting & glazing</li>
+          <li>Bedroom blackout & sunrise simulation</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- SIGNATURE -->
+<section class="deep-dive signature">
+  <div class="container">
+    <div class="deep-dive-header">
+      <div>
+        <span class="level-marker">Level II.</span>
+        <h2>Signature. <em>Active wellness.</em></h2>
+      </div>
+      <p class="deep-dive-intro">
+        Your habits, made effortless. The practices you already commit to — designed into your home as fully realised spaces, not converted bedrooms or hopeful corners.
+      </p>
+    </div>
+    <div class="elements-grid">
+      <article class="element-card">
+        <div class="element-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M5 9h14v6H5z"/><path d="M3 11v2M21 11v2M9 9V7M15 9V7M9 17v-2M15 17v-2"/></svg>
+        </div>
+        <h3>Movement</h3>
+        <div class="element-subtitle">The Home Gym, Realised</div>
+        <p>A genuine training environment — equipment selected for your practice, flooring engineered for impact, ventilation designed for effort, mirrors and acoustics that make working out at home preferable to anywhere else.</p>
+        <ul class="element-features">
+          <li>Bespoke equipment specification</li>
+          <li>Professional flooring & acoustics</li>
+          <li>Reformer, free weights, cardio</li>
+          <li>Mirror, music, ventilation systems</li>
+        </ul>
+      </article>
+      <article class="element-card">
+        <div class="element-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 18V8a4 4 0 014-4h8a4 4 0 014 4v10"/><path d="M4 18h16M9 12v2M15 12v2"/></svg>
+        </div>
+        <h3>Sauna & Cold</h3>
+        <div class="element-subtitle">Contrast Therapy</div>
+        <p>The most studied longevity protocol of the last decade, made daily. Finnish or infrared sauna paired with a cold plunge engineered to the right temperature, depth and protocol — designed as a ritual space, not a feature.</p>
+        <ul class="element-features">
+          <li>Traditional & infrared sauna design</li>
+          <li>Cold plunge integration</li>
+          <li>Outdoor & indoor configurations</li>
+          <li>Heat & cold protocol guidance</li>
+        </ul>
+      </article>
+      <article class="element-card">
+        <div class="element-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M3 12h18M5 8h14M7 16h10M9 4h6M9 20h6"/></svg>
+        </div>
+        <h3>Spa Design</h3>
+        <div class="element-subtitle">Recovery & Stillness</div>
+        <p>Treatment rooms, hammams, plunge pools, meditation spaces — designed by people whose careers were built inside the world's finest spas. The home spa, brought to hotel-grade standards.</p>
+        <ul class="element-features">
+          <li>Treatment room design & equipping</li>
+          <li>Hammam & wet-area engineering</li>
+          <li>Pool & hydrotherapy integration</li>
+          <li>Meditation & sound spaces</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ULTRA -->
+<section class="deep-dive ultra">
+  <div class="container">
+    <div class="deep-dive-header">
+      <div>
+        <span class="level-marker">Level III.</span>
+        <h2>Ultra. <em>Longevity, in residence.</em></h2>
+      </div>
+      <p class="deep-dive-intro">
+        For those who treat their biology as a project worth the same rigour as their architecture. The home as personal longevity facility — diagnostic, therapeutic, and concierge-supported.
+      </p>
+    </div>
+    <div class="elements-grid">
+      <article class="element-card">
+        <div class="element-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg>
+        </div>
+        <h3>Biohacking</h3>
+        <div class="element-subtitle">Advanced Therapies</div>
+        <p>Hyperbaric oxygen, red and near-infrared light therapy, PEMF, IV therapy stations, cryotherapy, EMF mitigation. The technologies that until recently lived only in clinics, brought into the home with full integration and protocol guidance.</p>
+        <ul class="element-features">
+          <li>Hyperbaric oxygen chambers</li>
+          <li>Red light & PEMF therapy</li>
+          <li>Cryotherapy & IV stations</li>
+          <li>Whole-home EMF mitigation</li>
+        </ul>
+      </article>
+      <article class="element-card">
+        <div class="element-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M4 6h16M4 12h16M4 18h10"/><circle cx="18" cy="18" r="3"/></svg>
+        </div>
+        <h3>Diagnostics</h3>
+        <div class="element-subtitle">Personalised Protocols</div>
+        <p>Bloodwork, genetic profiling, microbiome analysis, continuous glucose monitoring, body composition. Your biology, mapped — and then translated into protocols personalised to you, not pulled from a textbook.</p>
+        <ul class="element-features">
+          <li>Comprehensive panels & DNA</li>
+          <li>Microbiome & hormone mapping</li>
+          <li>Continuous monitoring integration</li>
+          <li>Personalised protocol design</li>
+        </ul>
+      </article>
+      <article class="element-card">
+        <div class="element-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3-7 8-7s8 3 8 7"/></svg>
+        </div>
+        <h3>Concierge</h3>
+        <div class="element-subtitle">Ongoing Support</div>
+        <p>The protocol is only the beginning. Ongoing concierge wellness — visiting practitioners, in-home treatments, chef collaboration, retreat planning, and continuous calibration as your biology and life evolve.</p>
+        <ul class="element-features">
+          <li>Visiting practitioner network</li>
+          <li>In-home treatment scheduling</li>
+          <li>Wellness chef partnerships</li>
+          <li>Annual protocol recalibration</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process">
+  <div class="section-header">
+    <span class="eyebrow">— How It Works</span>
+    <h2>From conversation to <em>completion.</em></h2>
+    <p>A discreet, considered process — designed to fit alongside your life, your home, and the timeline of moving in.</p>
+  </div>
+  <div class="container">
+    <div class="process-grid">
+      <div class="process-step">
+        <span class="step-num">— Step One</span>
+        <h3 class="step-title">Private Consultation & Audit</h3>
+        <p class="step-desc">A confidential conversation to understand your home, your habits, your ambitions. We assess what your residence already provides — and where it can be elevated.</p>
+      </div>
+      <div class="process-step">
+        <span class="step-num">— Step Two</span>
+        <h3 class="step-title">Bespoke Proposal</h3>
+        <p class="step-desc">A tailored programme across Essential, Signature, or Ultra — with specifications, suppliers, and integration plans matched to your residence.</p>
+      </div>
+      <div class="process-step">
+        <span class="step-num">— Step Three</span>
+        <h3 class="step-title">Integration</h3>
+        <p class="step-desc">We coordinate with your architect, designer, and builders. Where the home is complete, we work within it. Where it is not, we shape it from the start.</p>
+      </div>
+      <div class="process-step">
+        <span class="step-num">— Step Four</span>
+        <h3 class="step-title">Living In</h3>
+        <p class="step-desc">Onboarding, protocol guidance, and ongoing concierge support — so the home you move into continues to refine itself around you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<section class="testimonial">
+  <div class="container-narrow">
+    <span class="eyebrow">— In Their Words</span>
+    <p class="testimonial-quote">
+      We bought a home. Pure Wellness gave us a place that actively makes us better, every day we're in it.
+    </p>
+    <div class="testimonial-attr">
+      <span class="name" style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1rem; letter-spacing: 0.04em; text-transform: none;">— Private Client</span>
+      Courchevel Residence
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="container-narrow">
+    <span class="eyebrow">— Begin the Conversation</span>
+    <h2>Your home, <em>at the standard it deserves.</em></h2>
+    <p>
+      Every engagement begins with a private consultation. There is no obligation, only conversation. We will listen, understand, and propose only what makes sense for your home and your life.
+    </p>
+    <a href="mailto:contact@pure-wellness.com?subject=Private%20Consultation%20Request%20%E2%80%94%20Vallat%20Client" class="cta-button">
+      Request a Private Consultation
+      <span class="arrow">→</span>
+    </a>
+    <div class="cta-meta">
+      <span><span class="dot"></span> Discreet</span>
+      <span><span class="dot"></span> By appointment</span>
+      <span><span class="dot"></span> Vallat clients only</span>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="display-italic">Pure Wellness × Vallat</div>
+  <div style="margin-top: 0.5rem; opacity: 0.6;">Private Home Optimisation — By Invitation</div>
+</footer>
+
+</body>
+</html>
